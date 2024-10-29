@@ -1,11 +1,8 @@
 FROM golang:1.22.8
-
 WORKDIR /app
-
-COPY . .
-
-RUN go mod tidy
-
-RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -o /main main.go
-
-CMD ["/main"]
+COPY go.mod go.sum ./
+RUN go mod download
+COPY *.go ./
+COPY *.db ./
+RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -o /my_parcel_app
+CMD ["/my_parcel_app"]
